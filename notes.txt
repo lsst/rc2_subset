@@ -1,0 +1,195 @@
+butler query-data-ids /repo/main --collections HSC/RC2/defaults visit,tract,patch --where "tract=9813 and skymap='hsc_rings_v1' and detector in (58, 50, 42, 57, 49, 41) and instrument='HSC' and band='g'" --datasets raw | awk '{print $10}' |sort |uniq > g-visits.txt
+butler query-data-ids /repo/main --collections HSC/RC2/defaults visit,tract,patch --where "tract=9813 and skymap='hsc_rings_v1' and detector in (58, 50, 42, 57, 49, 41) and instrument='HSC' and band='r'" --datasets raw | awk '{print $10}' |sort |uniq > r-visits.txt
+butler query-data-ids /repo/main --collections HSC/RC2/defaults visit,tract,patch --where "tract=9813 and skymap='hsc_rings_v1' and detector in (58, 50, 42, 57, 49, 41) and instrument='HSC' and band='i'" --datasets raw | awk '{print $10}' |sort |uniq > i-visits.txt 
+butler query-data-ids /repo/main --collections HSC/RC2/defaults visit,tract,patch --where "tract=9813 and skymap='hsc_rings_v1' and detector in (58, 50, 42, 57, 49, 41) and instrument='HSC' and band='z'" --datasets raw | awk '{print $10}' |sort |uniq > z-visits.txt
+butler query-data-ids /repo/main --collections HSC/RC2/defaults visit,tract,patch --where "tract=9813 and skymap='hsc_rings_v1' and detector in (58, 50, 42, 57, 49, 41) and instrument='HSC' and band='y'" --datasets raw | awk '{print $10}' |sort |uniq > y-visits.txt
+
+shuf -n 8 g-visits.txt > random-visits.txt
+shuf -n 8 r-visits.txt >> random-visits.txt
+shuf -n 8 i-visits.txt >> random-visits.txt
+shuf -n 8 z-visits.txt >> random-visits.txt
+shuf -n 8 y-visits.txt >> random-visits.txt
+awk '{printf("%i, ", $1)}' random-visits.txt
+
+pipetask qgraph -q central_six_jointcal_9813.qgraph -b /repo/main/butler.yaml -d "detector in (58, 50, 42, 47, 49, 41) AND visit in (29336, 11690, 11698, 29350, 11696, 11704, 11710, 11694, 1220, 1204, 23694, 1206, 23706, 23704, 1214, 23718, 19694, 19680, 30490, 1242, 19684, 30482, 19696, 1248, 1178, 17948, 17950, 17904, 1184, 17906, 17926, 17900, 11738, 358, 11724, 346, 22632, 11740, 22662, 322) and tract = 9813 and skymap = 'hsc_rings_v1'" -p 'DRP.yaml#step1' -i HSC/RC2/defaults -o u/krughoff/test_output
+python nate_export.py
+
+# This results in a coaddDatasetDump.yaml file.
+# This needs to be modified to correct some issues.
+
+# 1. relative paths need to be corrected
+{code|vim}
+:1,$s/path: HSC/path: \/repo\/main\/HSC/
+:1,$s/path: skymaps/path: \/repo\/main\/skymaps/
+{code}
+
+# 2. we need to pare down the number of reference catalog files that are transferred.
+# See appendix for how the trixels were determined.
+# Replace the PS1 records with the following ones.
+{code|yaml}
+  - dataset_id:
+    - !uuid '89aa688d-3c4f-403f-b181-728c266f1a3b'
+    data_id:
+    - htm7: 231858
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231858.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid 'd19ccec2-e53f-4090-922b-627c0b00e61a'
+    data_id:
+    - htm7: 231828
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231828.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid 'def2d962-92bd-4694-ae34-3e6e2957e998'
+    data_id:
+    - htm7: 231829
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231829.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid '2bd1de6d-0d4e-46e1-b213-b9f054375a08'
+    data_id:
+    - htm7: 231831
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231831.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid 'b620a23e-6e41-4b2d-8ab6-6a46f4cb52f1'
+    data_id:
+    - htm7: 231834
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231834.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid 'a9d57e9f-46f0-4ca5-9faf-6e4c56b2f99f'
+    data_id:
+    - htm7: 231836
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231836.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid 'a4ec54d2-014c-48e4-a9ae-288081690c27'
+    data_id:
+    - htm7: 231856
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231856.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid '4c301a49-dd23-483b-b1d6-990a288d801b'
+    data_id:
+    - htm7: 231857
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231857.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid 'e8497fbf-fe7d-4562-bd9a-22b4dfb112c3'
+    data_id:
+    - htm7: 231859
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231859.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid '01efda26-5a37-4071-acb0-96689adf12ef'
+    data_id:
+    - htm7: 231862
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231862.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid 'd7c40d8f-e971-4a4b-b535-054317b92cc9'
+    data_id:
+    - htm7: 231865
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231865.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid 'cb889bb2-019f-442b-90d2-0e14dcf7a02a'
+    data_id:
+    - htm7: 231869
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231869.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+  - dataset_id:
+    - !uuid '7187e659-d2d7-4b1f-a479-030d107e36cd'
+    data_id:
+    - htm7: 231870
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231870.fits
+  - dataset_id:
+    - !uuid '23d52f67-cee8-4326-a6d8-79d890f089b6'
+    data_id:
+    - htm7: 231871
+    path: /datasets/refcats/htm/v1/ps1_pv3_3pi_20170110/231871.fits
+    formatter: lsst.obs.base.formatters.fitsGeneric.FitsGenericFormatter
+{code}
+
+# Now do the import
+
+butler create SMALL_HSC
+
+# From python prompt
+{code|python}
+from lsst.daf.butler import Butler
+butler = Butler('SMALL_HSC', writeable=True)
+butler.import_(filename='coaddDatasetDump.yaml', transfer='copy')
+{code}
+
+# Define visits
+butler define-visits SMALL_HSC HSC
+
+# Define a collection expected by FGCM
+# From python prompt
+{code|python}
+from lsst.daf.butler import Butler, CollectionType
+butler = Butler('SMALL_HSC', writeable=True)
+butler.registry.registerCollection('HSC/calib/unbounded', CollectionType.CHAINED, 'A CHAINED collection for unbounded calibs')
+colls = [el for el in butler.registry.queryCollections() if 'unbounded' in el and el != 'HSC/calib/unbounded']
+butler.registry.setCollectionChain('HSC/calib/unbounded', colls)
+{code}
+
+# Single Framme processing
+pipetask run -j 16 -b SMALL_HSC/butler.yaml -d "detector in (58, 50, 42, 47, 49, 41) AND visit in (29336, 11690, 11698, 29350, 11696, 11704, 11710, 11694, 1220, 1204, 23694, 1206, 23706, 23704, 1214, 23718, 19694, 19680, 30490, 1242, 19684, 30482, 19696, 1248, 1178, 17948, 17950, 17904, 1184, 17906, 17926, 17900, 11738, 358, 11724, 346, 22632, 11740, 22662, 322)" -p 'DRP.yaml#singleFrame' -i HSC/RC2/defaults --register-dataset-types -o u/krughoff/singleFrame
+
+# jointcal
+pipetask run -b SMALL_HSC/butler.yaml -d "band in ('g', 'r', 'i', 'z', 'y') AND detector in (58, 50, 42, 47, 49, 41) AND visit in (29336, 11690, 11698, 29350, 11696, 11704, 11710, 11694, 1220, 1204, 23694, 1206, 23706, 23704, 1214, 23718, 19694, 19680, 30490, 1242, 19684, 30482, 19696, 1248, 1178, 17948, 17950, 17904, 1184, 17906, 17926, 17900, 11738, 358, 11724, 346, 22632, 11740, 22662, 322)" -p 'DRP.yaml#jointcal' -i HSC/RC2/defaults,u/krughoff/singleFrame --register-dataset-types -o u/krughoff/jointcal
+
+# FGCM
+pipetask run -b SMALL_HSC/butler.yaml -d "detector in (58, 50, 42, 47, 49, 41) AND visit in (29336, 11690, 11698, 29350, 11696, 11704, 11710, 11694, 1220, 1204, 23694, 1206, 23706, 23704, 1214, 23718, 19694, 19680, 30490, 1242, 19684, 30482, 19696, 1248, 1178, 17948, 17950, 17904, 1184, 17906, 17926, 17900, 11738, 358, 11724, 346, 22632, 11740, 22662, 322)" -p 'DRP.yaml#fgcm' -i HSC/RC2/defaults,u/krughoff/singleFrame --register-dataset-types -o u/krughoff/fgcm
+
+# warp and coadd
+pipetask run -j 16 -b SMALL_HSC/butler.yaml -d "tract = 9813 and skymap = 'hsc_rings_v1' AND detector in (58, 50, 42, 47, 49, 41) AND visit in (29336, 11690, 11698, 29350, 11696, 11704, 11710, 11694, 1220, 1204, 23694, 1206, 23706, 23704, 1214, 23718, 19694, 19680, 30490, 1242, 19684, 30482, 19696, 1248, 1178, 17948, 17950, 17904, 1184, 17906, 17926, 17900, 11738, 358, 11724, 346, 22632, 11740, 22662, 322)" -p 'DRP.yaml#step2' -i HSC/RC2/defaults,u/krughoff/singleFrame,u/krughoff/fgcm,u/krughoff/jointcal --register-dataset-types -o u/krughoff/coadds
+
+# step 3
+# There are a couple of failures when running on the whole dataset.
+# Patches 38, 39, 40, and 41 have coverage in all 40 visits so just run those
+pipetask run -j 16 -b SMALL_HSC/butler.yaml -d "tract = 9813 AND skymap = 'hsc_rings_v1' AND patch in (38, 39, 40, 41) AND detector in (58, 50, 42, 47, 49, 41) AND visit in (29336, 11690, 11698, 29350, 11696, 11704, 11710, 11694, 1220, 1204, 23694, 1206, 23706, 23704, 1214, 23718, 19694, 19680, 30490, 1242, 19684, 30482, 19696, 1248, 1178, 17948, 17950, 17904, 1184, 17906, 17926, 17900, 11738, 358, 11724, 346, 22632, 11740, 22662, 322)" -p 'DRP.yaml#step3' -i HSC/RC2/defaults,u/krughoff/singleFrame,u/krughoff/fgcm,u/krughoff/jointcal,u/krughoff/coadds --register-dataset-types -o u/krughoff/objects
+
+
+
+*** Appendix **
+# To figure out what trixels are needed, you need to ingest at least the raws, you expect to run.
+# Then something like the following should work.
+
+# Figure out what HTM trixels we can get rid of from the PS1 refcat
+{code|python}
+from lsst.daf.butler import Butler
+from lsst.geom import Point2D, SpherePoint, Angle
+from esutil import htm
+butler = Butler('SMALL_HSC')
+raw_refs = butler.queryDatasets('raw', collections='HSC/RC2/defaults')
+spoints = []
+for r in raw_refs:
+    raw = butler.get(r, collections='HSC/RC2/defaults')
+    wcs = raw.getWcs()
+    inbox = raw.getBBox()
+    for c in inbox.getCorners():
+        spoints.append(wcs.pixelToSky(Point2D(c)))
+
+avg_ra = Angle(0)
+avg_dec = Angle(0)
+for p in spoints:
+    avg_ra += p.getRa()
+    avg_dec += p.getDec()
+
+avg_ra = avg_ra/len(spoints)
+avg_dec = avg_dec/len(spoints)
+center = SpherePoint(avg_ra, avg_dec)
+seps = []
+for p in spoints:
+    seps.append(c.separation(p))
+seps.sort()
+radius = seps[-1]
+htm = htm.HTM(depth=7)
+trixels = htm.intersect(center.getRa().asDegrees(), center.getDec().asDegrees(), radius.asDegrees())
+print(trixels)
+{code}
+[231858 231828 231829 231831 231834 231836 231856 231857 231859 231862 231865 231869 231870 231871]*
