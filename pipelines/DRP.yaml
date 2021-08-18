@@ -36,6 +36,11 @@ tasks:
       densityCutMaxPerPixel: 1500
       primaryBands: ['i', 'r', 'g', 'z', 'y', 'N921']
       doReferenceMatches: True
+  detection:
+    class: lsst.pipe.tasks.multiBand.DetectCoaddSourcesTask
+    config:
+      detection.thresholdValue: 250
+
   fgcmFitCycle:
     class: lsst.fgcmcal.fgcmFitCycle.FgcmFitCycleTask
     config:
@@ -184,13 +189,16 @@ subsets:
 
       This subset is considered a workaround for missing middleware and task
       functionality.  It may be removed in the future.
-  step3:
+  coadd_measurement:
     subset:
       - detection
+
       - mergeDetections
       - deblend
       - measure
       - mergeMeasurements
+  forced_objects:
+    subset:
       - forcedPhotCcd
       - forcedPhotCoadd
       - transformObjectTable
