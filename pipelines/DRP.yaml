@@ -132,6 +132,13 @@ subsets:
     description: >
       Set of tasks for complete single frame processing. Analogous to
       SingleFrameDriver.
+  simpleSingleFrame:
+    subset:
+      - isr
+      - characterizeImage
+      - calibrate
+    description: >
+       A simplified single frame pipeline to make the quantum graph more readable
   multiVisit:
     subset: []
     description: |
