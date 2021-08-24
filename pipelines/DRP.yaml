@@ -232,12 +232,26 @@ subsets:
       - AB1
       - TE3
       - TE4
-    description: |
-      Run faro metrics.
+      - modelPhotRepGal1
+      - modelPhotRepGal2
+      - modelPhotRepGal3
+      - modelPhotRepGal4
+      - modelPhotRepStar1
+      - modelPhotRepStar2
+      - modelPhotRepStar3
+      - modelPhotRepStar4
+      - psfPhotRepStar1
+      - psfPhotRepStar2
+      - psfPhotRepStar3
+      - psfPhotRepStar4
+    description: >
+      Run faro to calculate metrics on per-visit and matched-visit datasets.
+      This subset is to be executed after running the singleFrame subset.
   faro_coadd:
     subset:
       - TE1
       - TE2
-    description: |
-      Run faro metrics.
-
+      - wPerp
+    description: >
+      Run faro to calculate metrics based on coadded catalogs.
+      This subset is to be executed after running the step2 and step3 subsets.
