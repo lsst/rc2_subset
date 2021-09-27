@@ -18,3 +18,4 @@ pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -
 
 ${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/faro_singleFrame
 ${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/faro_coadd
+${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/faro_coadd --metrics_package "pipe_analysis"
