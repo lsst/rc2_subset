@@ -2,20 +2,22 @@
 
 set -e
 
-pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${RC2_SUBSET_DIR}'/pipelines/DRP.yaml#singleFrame' -i HSC/RC2/defaults --register-dataset-types -o jenkins/singleFrame
+pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${OBS_SUBARU_DIR}'/pipelines/DRP.yaml#step1' -i HSC/RC2/defaults --register-dataset-types -o jenkins/step1
 
-pipetask --long-log run -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${RC2_SUBSET_DIR}'/pipelines/DRP.yaml#jointcal' -i HSC/RC2/defaults,jenkins/singleFrame --register-dataset-types -o jenkins/jointcal
+pipetask --long-log run -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${OBS_SUBARU_DIR}'/pipelines/DRP.yaml#step2' -i jenkins/step1 --register-dataset-types -o jenkins/step2
 
-pipetask --long-log run -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${RC2_SUBSET_DIR}'/pipelines/DRP.yaml#fgcm' -i HSC/RC2/defaults,jenkins/singleFrame --register-dataset-types -o jenkins/fgcm
+pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${OBS_SUBARU_DIR}'/pipelines/DRP.yaml#step3' -d "tract = 9813 and skymap = 'hsc_rings_v1' AND patch in (40)" -i jenkins/step2 --register-dataset-types -o jenkins/step3
 
-pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${RC2_SUBSET_DIR}'/pipelines/DRP.yaml#faro_singleFrame' -i jenkins/fgcm,jenkins/jointcal --register-dataset-types -o jenkins/faro_singleFrame
+pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${OBS_SUBARU_DIR}'/pipelines/DRP.yaml#step4' -d "tract = 9813 and skymap = 'hsc_rings_v1' AND patch in (40)" -i jenkins/step3 --register-dataset-types -o jenkins/step4
 
-pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -d "tract = 9813 and skymap = 'hsc_rings_v1' AND patch in (40)" -p ${RC2_SUBSET_DIR}'/pipelines/DRP.yaml#step2' -i jenkins/fgcm,jenkins/jointcal --register-dataset-types -o jenkins/coadds
+pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${OBS_SUBARU_DIR}'/pipelines/DRP.yaml#step5' -d "tract = 9813 and skymap = 'hsc_rings_v1' AND patch in (40)" -i jenkins/step4 --register-dataset-types -o jenkins/step5
 
-pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -d "tract = 9813 AND skymap = 'hsc_rings_v1' AND patch in (40)" -p ${RC2_SUBSET_DIR}'/pipelines/DRP.yaml#step3' -i jenkins/coadds --register-dataset-types -o jenkins/objects
+pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${OBS_SUBARU_DIR}'/pipelines/DRP.yaml#step6' -d "tract = 9813 and skymap = 'hsc_rings_v1' AND patch in (40)" -i jenkins/step5 --register-dataset-types -o jenkins/step6
 
-pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${RC2_SUBSET_DIR}'/pipelines/DRP.yaml#faro_coadd' -i HSC/RC2/defaults,jenkins/singleFrame,jenkins/fgcm,jenkins/jointcal,jenkins/coadds,jenkins/objects --register-dataset-types -o jenkins/faro_coadd
+pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${OBS_SUBARU_DIR}'/pipelines/DRP.yaml#step7' -d "tract = 9813 and skymap = 'hsc_rings_v1' AND patch in (40)" -i jenkins/step6 --register-dataset-types -o jenkins/step7
 
-${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/faro_singleFrame
-${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/faro_coadd
-${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/faro_coadd --metrics_package "pipe_analysis"
+${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/step2
+${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/step3
+${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/step3 --metrics_package "pipe_analysis"
+${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/step5
+${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/step5 --metrics_package "pipe_analysis"
