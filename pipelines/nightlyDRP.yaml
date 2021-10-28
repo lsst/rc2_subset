@@ -1,0 +1,22 @@
+description: The DRP pipeline specialized for the rc2_subset test dataset.
+instrument: lsst.obs.subaru.HyperSuprimeCam
+imports:
+  location: "${OBS_SUBARU_DIR}/pipelines/DRP.yaml"
+  exclude:
+    # Exclude all tasks related to difference imaging.
+    - templateGen
+    - forcedPhotDiffim
+    - getTemplate
+    - imageDifference
+    - transformDiaSourceCat
+    - drpAssociation
+    - drpDiaCalculation
+    - forcedPhotCcdOnDiaObjects
+    - forcedPhotDiffOnDiaObjects
+    - consolidateAssocDiaSourceTable
+    - consolidateFullDiaObjectTable
+    - writeForcedSourceOnDiaObjectTable
+    - transformForcedSourceOnDiaObjectTable
+    - consolidateForcedSourceOnDiaObjectTable
+    - consolidateDiaSourceTable
+
