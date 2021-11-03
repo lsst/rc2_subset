@@ -135,7 +135,6 @@ subsets:
   nightlyStep4:
     subset:
     - forcedPhotCcd
-    - writeForcedSourceTable
     description: >
       Tasks that can be run together, but only after the 'step1', 'step2'
       and 'step3' subsets
@@ -145,8 +144,6 @@ subsets:
       detector-level quanta are desired.
   nightlyStep5:
     subset:
-    - transformForcedSourceTable
-    - consolidateForcedSourceTable
     - TE1
     - TE2
     - wPerp
@@ -156,5 +153,3 @@ subsets:
         This step includes patch-level aggregation Tasks. These should be
         run with explicit 'tract' constraints in the data query, otherwise
         quanta will be created for jobs with only partial visit coverage.
-        'consolidateForcedSourceTable' is a tract-level task that aggregates
-        patches and should be rerun if any of the patches fail.
