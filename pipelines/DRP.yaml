@@ -41,3 +41,115 @@ subsets:
       - transformObjectTable
       - writeObjectTable
       - consolidateObjectTable
+  nightlyStep1:
+    subset:
+      - isr
+      - characterizeImage
+      - calibrate
+      - writeSourceTable
+      - transformSourceTable
+    description: >
+      Per-detector tasks that can be run together to start the DRP pipeline.
+      These should never be run with 'tract' or 'patch' as part of the data ID
+      expression if any later steps will also be run, because downstream steps
+      require full visits and 'tract' and 'patch' constraints will always
+      select partial visits that overlap that region.
+  nightlyStep2:
+    subset:
+      - consolidateSourceTable
+      - consolidateVisitSummary
+      - skyCorr
+      - fgcmBuildStarsTable
+      - fgcmFitCycle
+      - fgcmOutputProducts
+      - nsrcMeasVisit
+      - TE3
+      - TE4
+    description: >
+      Per-visit tasks that can be run together, but only after the 'step1'.
+      These should never be run with 'tract' or 'patch' as part of the data ID
+      expression. skyCorr and FGCM require full visits and 'tract' and 'patch'
+      constraints will always select partial visits that overlap that region.
+      This includes FGCM because it's configured here to run in "global" mode,
+      which means one should not use 'tract' expression to constrain it, and if
+      one _did_ run it with a tract constraint (which would be a common
+      occurrence if it was included in any later step), it would be fed the
+      wrong (partial-visit) inputs to its 'background' connection.
+      This subset is considered a workaround for missing middleware and task
+      functionality.  It may be removed in the future.
+  nightlyStep3:
+    subset:
+      - jointcal
+      - makeWarp
+      - assembleCoadd
+      - detection
+      - mergeDetections
+      - deblend
+      - measure
+      - mergeMeasurements
+      - forcedPhotCoadd
+      - transformObjectTable
+      - writeObjectTable
+      - consolidateObjectTable
+      - healSparsePropertyMaps
+      - matchCatalogsTract
+      - matchCatalogsPatch
+      - matchCatalogsPatchMultiBand
+      - PA1
+      - PF1_design
+      - AM1
+      - AM2
+      - AM3
+      - AD1_design
+      - AD2_design
+      - AD3_design
+      - AF1_design
+      - AF2_design
+      - AF3_design
+      - AB1
+      - modelPhotRepGal1
+      - modelPhotRepGal2
+      - modelPhotRepGal3
+      - modelPhotRepGal4
+      - modelPhotRepStar1
+      - modelPhotRepStar2
+      - modelPhotRepStar3
+      - modelPhotRepStar4
+      - psfPhotRepStar1
+      - psfPhotRepStar2
+      - psfPhotRepStar3
+      - psfPhotRepStar4
+    description: >
+      Tasks that can be run together, but only after the 'step1' and 'step2'
+      subsets.
+      These should be run with explicit 'tract' constraints essentially all the
+      time, because otherwise quanta will be created for jobs with only partial
+      visit coverage.
+      It is expected that many forcedPhotCcd quanta will "normally" fail when
+      running this subset, but this isn't a problem right now because there
+      are no tasks downstream of it.  If other tasks regularly fail or we add
+      tasks downstream of forcedPhotCcd, these subsets or the tasks will need
+      additional changes.
+      This subset is considered a workaround for missing middleware and task
+      functionality.  It may be removed in the future.
+  nightlyStep4:
+    subset:
+    - forcedPhotCcd
+    description: >
+      Tasks that can be run together, but only after the 'step1', 'step2'
+      and 'step3' subsets
+      These detector-level tasks should not be run with
+      'tract' or 'patch' as part of the data ID expression if all
+      reference catalogs or diffIm templates that cover these
+      detector-level quanta are desired.
+  nightlyStep5:
+    subset:
+    - TE1
+    - TE2
+    - wPerp
+    description: >
+        Tasks that can be run together, but only after the 'step1', 'step2',
+        'step3', and 'step4' subsets
+        This step includes patch-level aggregation Tasks. These should be
+        run with explicit 'tract' constraints in the data query, otherwise
+        quanta will be created for jobs with only partial visit coverage.
