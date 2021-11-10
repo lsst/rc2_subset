@@ -12,7 +12,6 @@ pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -
 
 pipetask --long-log run -j $NUMPROC -b ${RC2_SUBSET_DIR}/SMALL_HSC/butler.yaml -p ${RC2_SUBSET_DIR}'/pipelines/DRP.yaml#nightlyStep5' -d "tract = 9813 and skymap = 'hsc_rings_v1' AND patch in (40)" -i jenkins/step4 --register-dataset-types -o jenkins/step5
 
-${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/step2
 ${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/step3
 ${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/step3 --metrics_package "pipe_analysis"
 ${FARO_DIR}/bin/make_job_document.py ${RC2_SUBSET_DIR}/SMALL_HSC jenkins/step5
