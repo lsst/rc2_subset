@@ -6,6 +6,187 @@ tasks:
     class: lsst.pipe.tasks.multiBand.DetectCoaddSourcesTask
     config:
       detection.thresholdValue: 250
+  PA1:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: PA1
+      measure.brightSnrMin: 100.0
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import PA1Task
+        config.measure.retarget(PA1Task)
+  PF1_design:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: PF1_design_gri
+      measure.threshPA2: 15.0
+      measure.brightSnrMin: 100.0
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import PF1Task
+        config.measure.retarget(PF1Task)
+  modelPhotRepGal1:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: modelPhotRepGal1
+      measure.index: 1
+      measure.selectExtended: True
+      measure.selectSnrMin: 5
+      measure.selectSnrMax: 10
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  modelPhotRepGal2:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: modelPhotRepGal2
+      measure.index: 2
+      measure.selectExtended: True
+      measure.selectSnrMin: 10
+      measure.selectSnrMax: 20
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  modelPhotRepGal3:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: modelPhotRepGal3
+      measure.index: 3
+      measure.selectExtended: True
+      measure.selectSnrMin: 20
+      measure.selectSnrMax: 40
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  modelPhotRepGal4:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: modelPhotRepGal4
+      measure.index: 4
+      measure.selectExtended: True
+      measure.selectSnrMin: 40
+      measure.selectSnrMax: 80
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  modelPhotRepStar1:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: modelPhotRepStar1
+      measure.index: 1
+      measure.selectExtended: False
+      measure.selectSnrMin: 5
+      measure.selectSnrMax: 10
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  modelPhotRepStar2:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: modelPhotRepStar2
+      measure.index: 2
+      measure.selectExtended: False
+      measure.selectSnrMin: 10
+      measure.selectSnrMax: 20
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  modelPhotRepStar3:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: modelPhotRepStar3
+      measure.index: 3
+      measure.selectExtended: False
+      measure.selectSnrMin: 20
+      measure.selectSnrMax: 40
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  modelPhotRepStar4:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: modelPhotRepStar4
+      measure.index: 4
+      measure.selectExtended: False
+      measure.selectSnrMin: 40
+      measure.selectSnrMax: 80
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  psfPhotRepStar1:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: psfPhotRepStar1
+      measure.index: 1
+      measure.selectExtended: False
+      measure.selectSnrMin: 5
+      measure.selectSnrMax: 10
+      measure.magName: "slot_PsfFlux_mag"
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  psfPhotRepStar2:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: psfPhotRepStar2
+      measure.index: 2
+      measure.selectExtended: False
+      measure.selectSnrMin: 10
+      measure.selectSnrMax: 20
+      measure.magName: "slot_PsfFlux_mag"
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  psfPhotRepStar3:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: psfPhotRepStar3
+      measure.index: 3
+      measure.selectExtended: False
+      measure.selectSnrMin: 20
+      measure.selectSnrMax: 40
+      measure.magName: "slot_PsfFlux_mag"
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
+  psfPhotRepStar4:
+    class: lsst.faro.measurement.TractMatchedMeasurementTask
+    config:
+      connections.package: validate_drp
+      connections.metric: psfPhotRepStar4
+      measure.index: 4
+      measure.selectExtended: False
+      measure.selectSnrMin: 40
+      measure.selectSnrMax: 80
+      measure.magName: "slot_PsfFlux_mag"
+      measure.nMinPhotRepeat: 20
+      python: |
+        from lsst.faro.measurement import ModelPhotRepTask
+        config.measure.retarget(ModelPhotRepTask)
 subsets:
   fgcm:
     subset:
