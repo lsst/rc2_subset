@@ -1,6 +1,6 @@
 description: The DRP pipeline specialized for rc2_subset processing in jenkins and tutorials 
 imports:
-  - $OBS_SUBARU_DIR/pipelines/DRP.yaml
+  - $DRP_PIPE_DIR/pipelines/HSC/DRP-RC2.yaml
 tasks:
   detection_tutorial:
     class: lsst.pipe.tasks.multiBand.DetectCoaddSourcesTask
@@ -38,6 +38,7 @@ tasks:
       measure.selectSnrMax: 10
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractGxsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   modelPhotRepGal2:
@@ -51,6 +52,7 @@ tasks:
       measure.selectSnrMax: 20
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractGxsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   modelPhotRepGal3:
@@ -64,6 +66,7 @@ tasks:
       measure.selectSnrMax: 40
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractGxsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   modelPhotRepGal4:
@@ -77,6 +80,7 @@ tasks:
       measure.selectSnrMax: 80
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractGxsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   modelPhotRepStar1:
@@ -90,6 +94,7 @@ tasks:
       measure.selectSnrMax: 10
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractStarsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   modelPhotRepStar2:
@@ -103,6 +108,7 @@ tasks:
       measure.selectSnrMax: 20
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractStarsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   modelPhotRepStar3:
@@ -116,6 +122,7 @@ tasks:
       measure.selectSnrMax: 40
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractStarsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   modelPhotRepStar4:
@@ -129,6 +136,7 @@ tasks:
       measure.selectSnrMax: 80
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractStarsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   psfPhotRepStar1:
@@ -143,6 +151,7 @@ tasks:
       measure.magName: "slot_PsfFlux_mag"
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractStarsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   psfPhotRepStar2:
@@ -157,6 +166,7 @@ tasks:
       measure.magName: "slot_PsfFlux_mag"
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractStarsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   psfPhotRepStar3:
@@ -171,6 +181,7 @@ tasks:
       measure.magName: "slot_PsfFlux_mag"
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractStarsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
   psfPhotRepStar4:
@@ -185,6 +196,7 @@ tasks:
       measure.magName: "slot_PsfFlux_mag"
       measure.nMinPhotRepeat: 20
       python: |
+        config.connections.matchedCatalog = 'matchedCatalogTractStarsSNR5to80'
         from lsst.faro.measurement import ModelPhotRepTask
         config.measure.retarget(ModelPhotRepTask)
 subsets:
@@ -276,6 +288,9 @@ subsets:
       - matchCatalogsTract
       - matchCatalogsPatch
       - matchCatalogsPatchMultiBand
+      - matchCatalogsTractMag17to21p5
+      - matchCatalogsTractStarsSNR5to80
+      - matchCatalogsTractGxsSNR5to80
       - PA1
       - PF1_design
       - AM1
