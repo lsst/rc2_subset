@@ -252,6 +252,8 @@ subsets:
       - consolidateSourceTable
       - consolidateVisitSummary
       - skyCorr
+      - isolatedStarAssociation
+      - finalizeCharacterization
       - fgcmBuildStarsTable
       - fgcmFitCycle
       - fgcmOutputProducts
