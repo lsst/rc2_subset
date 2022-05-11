@@ -247,16 +247,13 @@ subsets:
       expression if any later steps will also be run, because downstream steps
       require full visits and 'tract' and 'patch' constraints will always
       select partial visits that overlap that region.
-  nightlyStep2:
+  nightlyStep2a:
     subset:
       - consolidateSourceTable
       - consolidateVisitSummary
       - skyCorr
       - isolatedStarAssociation
       - finalizeCharacterization
-      - fgcmBuildStarsTable
-      - fgcmFitCycle
-      - fgcmOutputProducts
       - nsrcMeasVisit
       - TE3
       - TE4
@@ -272,6 +269,13 @@ subsets:
       wrong (partial-visit) inputs to its 'background' connection.
       This subset is considered a workaround for missing middleware and task
       functionality.  It may be removed in the future.
+  nightlyStep2b:
+    subset:
+      - fgcmBuildStarsTable
+      - fgcmFitCycle
+      - fgcmOutputProducts
+    description: >
+      FGCM tasks that must be run with no pipetask multiprocessing.
   nightlyStep3:
     subset:
       - jointcal
