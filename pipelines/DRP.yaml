@@ -239,8 +239,8 @@ subsets:
       - isr
       - characterizeImage
       - calibrate
-      - writeSourceTable
-      - transformSourceTable
+      - writePreSourceTable
+      - transformPreSourceTable
     description: >
       Per-detector tasks that can be run together to start the DRP pipeline.
       These should never be run with 'tract' or 'patch' as part of the data ID
@@ -249,7 +249,7 @@ subsets:
       select partial visits that overlap that region.
   nightlyStep2a:
     subset:
-      - consolidateSourceTable
+      - consolidatePreSourceTable
       - consolidateVisitSummary
       - skyCorr
       - isolatedStarAssociation
