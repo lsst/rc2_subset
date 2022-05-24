@@ -252,11 +252,6 @@ subsets:
       - consolidatePreSourceTable
       - consolidateVisitSummary
       - skyCorr
-      - isolatedStarAssociation
-      - finalizeCharacterization
-      - nsrcMeasVisit
-      - TE3
-      - TE4
     description: >
       Per-visit tasks that can be run together, but only after the 'step1'.
       These should never be run with 'tract' or 'patch' as part of the data ID
@@ -271,14 +266,35 @@ subsets:
       functionality.  It may be removed in the future.
   nightlyStep2b:
     subset:
+      - isolatedStarAssociation
+      - jointcal
+    description: >
+      Per-tract tasks.
+      jointcal should be run with explicit 'tract' constraints essentially all the
+      time, because otherwise quanta will be created for jobs with only partial
+      visit coverage.
+      isolatedStarAssociation can be run with or without 'tract' constraints.
+  nightlyStep2c:
+    subset:
       - fgcmBuildStarsTable
       - fgcmFitCycle
       - fgcmOutputProducts
     description: >
-      FGCM tasks that must be run with no pipetask multiprocessing.
+      FGCM tasks that must be run with no pipetask multiprocessing
+      and no data query
+  nightlyStep2d:
+    subset:
+      - finalizeCharacterization
+      - writeRecalibratedSourceTable
+      - transformSourceTable
+      - consolidateSourceTable
+      - nsrcMeasVisit
+      - TE3
+      - TE4
+    description: >
+      Per-visit tasks. These should never be run with tract constraints
   nightlyStep3:
     subset:
-      - jointcal
       - makeWarp
       - assembleCoadd
       - detection
