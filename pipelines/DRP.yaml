@@ -2,7 +2,6 @@ description: The DRP pipeline specialized for rc2_subset processing in jenkins a
 imports:
   - $DRP_PIPE_DIR/pipelines/HSC/DRP-RC2.yaml
 tasks:
-  writeSourceTable: lsst.pipe.tasks.postprocess.WriteSourceTableTask
   detection_tutorial:
     class: lsst.pipe.tasks.multiBand.DetectCoaddSourcesTask
     config:
@@ -226,17 +225,23 @@ subsets:
       - isr
       - characterizeImage
       - calibrate
-      - writeSourceTable
-      - transformSourceTable
-      - consolidateSourceTable
+      - writePreSourceTable
+      - transformPreSourceTable
+      - consolidatePreSourceTable
       - consolidateVisitSummary
+      - skyCorr
       - isolatedStarAssociation
-      - finalizeCharacterization
-      - makeCcdVisitTable
-      - makeVisitTable
     description: >
       Set of tasks for complete single frame processing. Analogous to
       SingleFrameDriver.
+  source_calibration:
+    subset:
+      - finalizeCharacterization
+      - makeCcdVisitTable
+      - makeVisitTable
+      - writeRecalibratedSourceTable
+      - transformSourceTable
+      - consolidateSourceTable
   coadd_measurement:
     subset:
       - detection_tutorial
