@@ -232,8 +232,8 @@ subsets:
       - skyCorr
       - isolatedStarAssociation
     description: >
-      Set of tasks for complete single frame processing. Analogous to
-      SingleFrameDriver.
+      Set of tasks for complete single frame processing. Because this includes
+      skyCorr, it requires multiple detectors per visit.
   source_calibration:
     subset:
       - finalizeCharacterization
