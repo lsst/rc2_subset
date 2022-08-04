@@ -213,7 +213,7 @@ subsets:
       - characterizeImage
       - calibrate
     description: >
-       A simplified single frame pipeline to make the quantum graph more readable
+       A simplified single frame pipeline to make the quantum graph more readable.
   multiVisit:
     subset: []
     description: |
@@ -233,7 +233,12 @@ subsets:
       - isolatedStarAssociation
     description: >
       Set of tasks for complete single frame processing. Because this includes
-      skyCorr, it requires multiple detectors per visit.
+      skyCorr, it requires multiple detectors per visit. Although they duplicate
+      tasks from the main "stepN" subsets from drp_pipe's DRP-RC2.yaml, we
+      include the subsets singleFrame, source_calibration, coadd_measurement, and
+      forced_objects within this pipeline so that users following the "getting
+      started" tutorial on pipelines.lsst.io understand the basic steps that are
+      contained within each subset.
   source_calibration:
     subset:
       - finalizeCharacterization
