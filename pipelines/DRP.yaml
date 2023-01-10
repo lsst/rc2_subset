@@ -242,6 +242,7 @@ subsets:
   source_calibration:
     subset:
       - finalizeCharacterization
+      - updateVisitSummary
       - makeCcdVisitTable
       - makeVisitTable
       - writeRecalibratedSourceTable
@@ -312,6 +313,7 @@ subsets:
   nightlyStep2d:
     subset:
       - finalizeCharacterization
+      - updateVisitSummary
       - writeRecalibratedSourceTable
       - transformSourceTable
       - consolidateSourceTable
