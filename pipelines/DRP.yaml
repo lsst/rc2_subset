@@ -285,6 +285,7 @@ subsets:
   nightlyStep2d:
     subset:
       - finalizeCharacterization
+      - updateVisitSummary
       - writeRecalibratedSourceTable
       - transformSourceTable
       - consolidateSourceTable
