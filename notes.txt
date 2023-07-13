@@ -193,3 +193,24 @@ trixels = htm.intersect(center.getRa().asDegrees(), center.getDec().asDegrees(),
 print(trixels)
 {code}
 [231858 231828 231829 231831 231834 231836 231856 231857 231859 231862 231865 231869 231870 231871]*
+
+# To add the Gaia DR3 reference catalog, all files overlapping with the tract 9813 were selected using the
+# /repo/main butler, then copied over to SMALL_HSC/refcats:
+
+from lsst.daf.butler import Butler
+butler = Butler('/repo/main')
+gaiarefs = list(set(butler.registry.queryDatasets('gaia_dr3_20230707', tract=9813, skymap='hsc_rings_v1')))
+for ref in refs:
+    filename = butler.getURI(ref).ospath
+    base = op.basename(filename)
+    num, ext = op.splitext(base)
+    newname = f'SMALL_HSC/refcats/DM-39298/gaia_dr3_20230707/gaia_dr3_20230707_{num}_refcats_DM-39298{ext}'
+    print(base, newname)
+    shutil.copyfile(base, newname)
+
+# Then, add the files to the rc2_subset butler from the command line 
+# (see meas_algorithms for more information):
+butler register-dataset-type ${RC2_SUBSET_DIR}/SMALL_HSC gaia_dr3_20230707 SimpleCatalog htm7
+# tmp_file_to_htm.ecsv is a table containing the filenames and htm7 shard numbers
+butler ingest-files -t direct ${RC2_SUBSET_DIR}/SMALL_HSC gaia_dr3_20230707 refcats/<ticket number> tmp_file_to_htm.ecsv
+butler collection-chain ${RC2_SUBSET_DIR}/SMALL_HSC --mode extend refcats refcats/<ticket number>
