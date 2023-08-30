@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e  # Exit immediately on failures.
-
 welcome="RC2_subset nightly processing"
 underline=$(printf "%-${#welcome}s" | tr ' ' '-')
 echo -e "$welcome\n$underline"
@@ -14,6 +12,8 @@ else
     exit 1
 fi
 LSST_DISTRIB_EUPS=$(awk '{for (i=3; i<=NF; i++) printf "%s ", $i; print ""}' <<< "$LSST_DISTRIB")
+
+set -e  # Exit immediately on failures from this point on.
 
 RC2_SUBSET_EUPS=${RC2_SUBSET_EUPS:-setup}
 echo "[RC2_SUBSET_EUPS] EUPS lsst_distrib: $RC2_SUBSET_EUPS"
