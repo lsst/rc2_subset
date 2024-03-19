@@ -40,7 +40,7 @@ RC2_SUBSET_PIPE=${RC2_SUBSET_PIPE:-$DRP_PIPE_DIR/pipelines/HSC/DRP-RC2_subset.ya
 echo "[RC2_SUBSET_PIPE] Pipeline def YAML: $RC2_SUBSET_PIPE"
 
 # Check that required file paths exist.
-paths=($RC2_SUBSET_PIPE)
+paths=($RC2_SUBSET_REPO $RC2_SUBSET_PIPE)
 for path in "${paths[@]}"; do
     if [ ! -e "$path" ]; then
         echo -e "\nERROR: Path does not exist: $path"
