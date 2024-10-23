@@ -27,9 +27,6 @@ pipetask --long-log run --register-dataset-types -j $NUMPROC -b $REPO -i $OUTPUT
 echo "Running nightlyStep4 on tract 9813, patch 40"
 pipetask --long-log run --register-dataset-types -j $NUMPROC -b $REPO -i $OUTPUT_COLLECTION_STUB/step3 -o $OUTPUT_COLLECTION_STUB/step4 -p $RC2_SUBSET_PIPELINE#nightlyStep4 -d "skymap = 'hsc_rings_v1' AND tract = 9813 AND patch in (40)"
 
-echo "Running nightlyStep5 on tract 9813, patch 40"
-pipetask --long-log run --register-dataset-types -j $NUMPROC -b $REPO -i $OUTPUT_COLLECTION_STUB/step4 -o $OUTPUT_COLLECTION_STUB/step5 -p $RC2_SUBSET_PIPELINE#nightlyStep5 -d "skymap = 'hsc_rings_v1' AND tract = 9813 AND patch in (40) AND band in ('g', 'r', 'i', 'z', 'y')"
-
 echo "Running make_job_document.py faro script"
 ${FARO_DIR}/bin/make_job_document.py $REPO $OUTPUT_COLLECTION_STUB/step3
 ${FARO_DIR}/bin/make_job_document.py $REPO $OUTPUT_COLLECTION_STUB/step5
