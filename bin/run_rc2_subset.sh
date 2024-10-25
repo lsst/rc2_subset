@@ -116,10 +116,6 @@ cmd_4="$PIPETASK_RUN#nightlyStep4 -j $RC2_SUBSET_PROC -d \"skymap = 'hsc_rings_v
 echo -e "\nRunning nightlyStep4 on tract 9813, patch 40\n$cmd_4"
 eval $cmd_4
 
-cmd_5="$PIPETASK_RUN#nightlyStep5 -j $RC2_SUBSET_PROC -d \"skymap = 'hsc_rings_v1' AND tract = 9813 AND patch in (40) AND band in ('g', 'r', 'i', 'z', 'y')\""
-echo -e "\nRunning nightlyStep5 on tract 9813, patch 40\n$cmd_5"
-eval $cmd_5
-
 cmd_8="$PIPETASK_RUN#nightlyStep8 -j $RC2_SUBSET_PROC"
 echo -e "\nRunning nightlyStep8 on tract 9813, patch 40\n$cmd_8"
 eval $cmd_8
