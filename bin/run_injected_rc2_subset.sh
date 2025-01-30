@@ -36,6 +36,9 @@ echo "[RC2_SUBSET_COLL] Existing output collection (non-injected): $RC2_SUBSET_C
 RC2_SUBSET_INJECT_CATS=${RC2_SUBSET_INJECT_CATS:-injection/catalogs/DM-47887}
 echo "[RC2_SUBSET_INJECT_CATS] Injection catalog input collection: $RC2_SUBSET_INJECT_CATS"
 
+RC2_SUBSET_INJECT_COLL=${RC2_SUBSET_INJECT_COLL:-u/$USER/RC2_subset/injected_nightly}
+echo "[RC2_SUBSET_INJECT_COLL] New injected output collection    : $RC2_SUBSET_INJECT_COLL"
+
 RC2_SUBSET_INJECT_PIPE=${RC2_SUBSET_INJECT_PIPE:-$DRP_PIPE_DIR/pipelines/HSC/DRP-RC2_subset+injected_deepCoadd.yaml}
 echo "[RC2_SUBSET_INJECT_PIPE] Source injection pipeline def YAML: $RC2_SUBSET_INJECT_PIPE"
 
@@ -67,7 +70,7 @@ To resolve this, please either set up lsst_distrib with the expected EUPS tag:
 or change the RC2_SUBSET_EUPS environment variable to match one of the
 currently set up lsst_distrib EUPS version tags:
 
-    RC2_SUBSET_EUPS=<TAG> ./run_rc2_subset.sh
+    RC2_SUBSET_EUPS=<TAG> ./run_injected_rc2_subset.sh
 
 EOF
     exit 1
@@ -85,7 +88,7 @@ start_time=$(date +%s)
 # Boilerplate pipetask run command.
 # NOTE: The -p pipeline argument *must* be the last argument here, as subsets
 #       are passed to the pipeline as a string immediately following this.
-INJECTED_PIPETASK_RUN="pipetask --log-level $RC2_SUBSET_LEVL --long-log run --register-dataset-types $RC2_SUBSET_ARGS -b $RC2_SUBSET_REPO -i $RC2_SUBSET_COLL,$RC2_SUBSET_INJECT_CATS -o $RC2_SUBSET_COLL -p $RC2_SUBSET_INJECT_PIPE"
+INJECTED_PIPETASK_RUN="pipetask --log-level $RC2_SUBSET_LEVL --long-log run --register-dataset-types $RC2_SUBSET_ARGS -b $RC2_SUBSET_REPO -i $RC2_SUBSET_COLL,$RC2_SUBSET_INJECT_CATS -o $RC2_SUBSET_INJECT_COLL -p $RC2_SUBSET_INJECT_PIPE"
 
 injected_cmd_3="$INJECTED_PIPETASK_RUN#injected_nightlyStep3 -j $RC2_SUBSET_PROC -d \"skymap = 'hsc_rings_v1' AND tract = 9813 AND patch in (40)\""
 echo -e "\nRunning injected_nightlyStep3 on tract 9813, patch 40\n$injected_cmd_3"
