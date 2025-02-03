@@ -39,7 +39,7 @@ echo "[RC2_SUBSET_INJECT_CATS] Injection catalog input collection: $RC2_SUBSET_I
 RC2_SUBSET_INJECT_COLL=${RC2_SUBSET_INJECT_COLL:-u/$USER/RC2_subset/injected_nightly}
 echo "[RC2_SUBSET_INJECT_COLL] New injected output collection    : $RC2_SUBSET_INJECT_COLL"
 
-RC2_SUBSET_INJECT_PIPE=${RC2_SUBSET_INJECT_PIPE:-$DRP_PIPE_DIR/pipelines/HSC/DRP-RC2_subset+injected_deepCoadd.yaml}
+RC2_SUBSET_INJECT_PIPE=${RC2_SUBSET_INJECT_PIPE:-$DRP_PIPE_DIR/pipelines/HSC/DRP-RC2_subset+injected_deepCoadd_stars.yaml}
 echo "[RC2_SUBSET_INJECT_PIPE] Source injection pipeline def YAML: $RC2_SUBSET_INJECT_PIPE"
 
 # Check that required file paths exist.
@@ -93,6 +93,10 @@ INJECTED_PIPETASK_RUN="pipetask --log-level $RC2_SUBSET_LEVL --long-log run --re
 injected_cmd_3="$INJECTED_PIPETASK_RUN#injected_nightlyStep3 -j $RC2_SUBSET_PROC -d \"skymap = 'hsc_rings_v1' AND tract = 9813 AND patch in (40)\""
 echo -e "\nRunning injected_nightlyStep3 on tract 9813, patch 40\n$injected_cmd_3"
 eval $injected_cmd_3
+
+injected_cmd_coadd_analysis="$INJECTED_PIPETASK_RUN#injected_stars_coadd_analysis -j $RC2_SUBSET_PROC -d \"skymap = 'hsc_rings_v1' AND tract = 9813 AND patch in (40)\""
+echo -e "\nRunning injected_coadd_analysis on tract 9813, patch 40\n$injected_cmd_coadd_analysis"
+eval $injected_cmd_coadd_analysis
 
 # Capture the end time and calculate the total runtime.
 end_time=$(date +%s)
